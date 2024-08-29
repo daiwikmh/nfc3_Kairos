@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, Button, Grid, Typography, TextField, Box, Alert } from '@mui/material';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { grey } from '@mui/material/colors';
+import useAuthStore from '../store/useAuthStore';
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState({
@@ -16,6 +17,7 @@ const AdminDashboard = () => {
     const [policyName, setPolicyName] = useState('');
     const [policyDetails, setPolicyDetails] = useState({ type: '', amount: '' });
     const [successMessage, setSuccessMessage] = useState('');
+    const { company } = useAuthStore();
 
     const handleAddPolicy = () => {
         setRecentPolicies([...recentPolicies, { id: Date.now(), name: policyName, ...policyDetails }]);
@@ -50,8 +52,8 @@ const AdminDashboard = () => {
 
     return (
         <div style={{ padding: '16px', backgroundColor: grey[100] }}>
-            <Typography variant="h4" gutterBottom>
-                Admin Dashboard
+            <Typography variant="h4" gutterBottom color='black'>
+                Admin Dashboard - {company.companyName}
             </Typography>
 
             {successMessage && (
@@ -164,6 +166,18 @@ const AdminDashboard = () => {
                     <Button variant="contained" color="primary" style={{ marginRight: '8px' }} onClick={handleGenerateReports}>
                         Generate Reports
                     </Button>
+                </CardContent>
+            </Card>
+
+
+            {/* New Company Profile Section */}
+            <Card style={{ marginTop: '16px' }}>
+                <CardHeader title="Company Profile" />
+                <CardContent>
+                    <Typography variant="h6">Company Name: {company.companyName}</Typography>
+                    <Typography variant="body1">Email: {company.email}</Typography>
+                    <Typography variant="body1">Address: {company.address}</Typography>
+                    <Typography variant="body1">Phone: {company.phone}</Typography>
                 </CardContent>
             </Card>
         </div>

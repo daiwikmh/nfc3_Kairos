@@ -3,13 +3,18 @@ import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 import useAuthStore from '../store/useAuthStore';
 import { useNavigate } from 'react-router-dom';
 
-
 const Navbar = () => {
-    const { isLoggedIn, setLogout } = useAuthStore();
+    const { isLoggedIn, setUserLogout, isCompanyLoggedIn, setCompanyLogout } = useAuthStore();
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        setLogout();
+        if (isLoggedIn) {
+            setUserLogout();
+        }
+        if (isCompanyLoggedIn) {
+            setCompanyLogout();
+        }
+
         navigate('/')
     };
 
@@ -19,7 +24,7 @@ const Navbar = () => {
                 <Typography variant="h6" sx={{ flexGrow: 1 }}>
                     Insurity
                 </Typography>
-                {isLoggedIn && (
+                {(isLoggedIn || isCompanyLoggedIn)&& (
                     <Button color="inherit" onClick={handleLogout}>
                         Logout
                     </Button>

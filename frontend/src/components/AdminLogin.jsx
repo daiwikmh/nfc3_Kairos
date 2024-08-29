@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, Button, TextField, Typography, Link } from '@mui/material';
+import useAuthStore from '../store/useAuthStore';
 
 const AdminAuth = () => {
     const [isLogin, setIsLogin] = useState(true);
     const [formData, setFormData] = useState({
-        id: '',
+        companyName: '', // Changed from id to companyName
         email: '',
         password: ''
     });
+    const {setCompanyLogin} = useAuthStore();
 
     const navigate = useNavigate();
 
@@ -20,11 +22,33 @@ const AdminAuth = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle form submission (login or signup)
-        console.log(formData);
-        navigate("/admin/dashboard");
+        try {
+            const url = isLogin ? '/api/admin/login' : '/api/admin/signup';
+            const response = await fetch(`http://localhost:5001${url}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Error:', errorData);
+                throw new Error(errorData.message || 'Something went wrong');
+            }
+
+            const data = await response.json();
+            // Save the token in localStorage or context
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('admin', JSON.stringify(data.admin));
+            setCompanyLogin(data.admin)
+            navigate('/admin/dashboard'); // Navigate to the admin dashboard after login/signup
+        } catch (error) {
+            console.error('Error:', error.message);
+        }
     };
 
     return (
@@ -38,12 +62,12 @@ const AdminAuth = () => {
                     <div style={{ marginBottom: '16px' }}>
                         {!isLogin && (
                             <TextField
-                                label="Admin ID"
+                                label="Company Name"
                                 variant="outlined"
                                 fullWidth
-                                id="id"
-                                name="id"
-                                value={formData.id}
+                                id="companyName"
+                                name="companyName"
+                                value={formData.companyName}
                                 onChange={handleInputChange}
                                 required
                                 margin="normal"

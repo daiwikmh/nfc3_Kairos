@@ -21,7 +21,7 @@ const UserAuth = () => {
         gender: ''
     });
     const navigate = useNavigate(); // Initialize the navigate function
-    const { setLogin, user, isLoggedIn } = useAuthStore();
+    const { setUserLogin, user, isLoggedIn } = useAuthStore();
 
 
 
@@ -52,7 +52,7 @@ const UserAuth = () => {
             if (response.ok) {
                 // Store the token in localStorage
                 localStorage.setItem('token', data.token);
-                setLogin(data.user);
+                setUserLogin(data.user);
 
                 // Log the user data to the console
                 console.log('User Data:', data.user);
