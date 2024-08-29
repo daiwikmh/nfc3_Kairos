@@ -10,7 +10,8 @@ const Home = () => {
             alignItems="center"
             justifyContent="center"
             minHeight="100vh"
-            bgcolor="grey.100"
+            bgcolor="grey.900"
+            width="100vw"
         >
             <Typography variant="h2" component="h1" gutterBottom>
                 Welcome to Insurance Blockchain System

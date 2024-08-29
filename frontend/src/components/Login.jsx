@@ -9,6 +9,7 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
+import useAuthStore from '../store/useAuthStore';
 
 const UserAuth = () => {
     const [isLogin, setIsLogin] = useState(true);
@@ -20,6 +21,9 @@ const UserAuth = () => {
         gender: ''
     });
     const navigate = useNavigate(); // Initialize the navigate function
+    const { setLogin, user, isLoggedIn } = useAuthStore();
+
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -29,11 +33,36 @@ const UserAuth = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle form submission (login or signup)
-        console.log(formData);
-        navigate('/user/dashboard'); // Navigate to /user/dashboard
+
+        const url = isLogin ? '/api/auth/login' : '/api/auth/register';
+
+        try {
+            const response = await fetch(`http://localhost:5001${url}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Store the token in localStorage
+                localStorage.setItem('token', data.token);
+                setLogin(data.user);
+
+                // Log the user data to the console
+                console.log('User Data:', data.user);
+                navigate('/user/dashboard');
+            } else {
+                console.error(data.msg);
+            }
+        } catch (err) {
+            console.error(err);
+        }
     };
 
     return (

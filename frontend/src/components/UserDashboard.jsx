@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, Typography, Button, Box, Alert } from '@mui/material';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import useAuthStore from '../store/useAuthStore';
 
 const UserDashboard = () => {
     const [activeSection, setActiveSection] = useState('overview');
     const [boughtPolicies, setBoughtPolicies] = useState([]);
     const [successMessage, setSuccessMessage] = useState('');
+    const { user } = useAuthStore();
 
     const policiesAvailable = [
         { id: 1, name: 'Health Insurance', premium: '5100', duration: '1 Year' },
@@ -57,7 +59,7 @@ const UserDashboard = () => {
     return (
         <Box sx={{ p: 4 }}>
             <Typography variant="h4" component="h1" gutterBottom>
-                Welcome, User
+                Welcome, {user.email}
             </Typography>
             <Box display="flex" mb={4} gap={2}>
                 <Button variant="contained" color={activeSection === 'overview' ? 'primary' : 'default'} onClick={() => setActiveSection('overview')}>
@@ -211,20 +213,31 @@ const Claims = ({ boughtPolicies, onClaimPolicy }) => (
     </Box>
 );
 
-const Profile = () => (
-    <Box>
-        <Typography variant="h5" gutterBottom> 
-            Profile Management
-        </Typography>
-        <Card>
-            <CardContent>
-                <Typography variant="body1">Name: John Doe</Typography>
-                <Typography variant="body1">Email: john.doe@example.com</Typography>
-                <Typography variant="body1">Phone: 123-456-7890</Typography>
-                <Button variant="contained" sx={{ mt: 2 }}>Edit Profile</Button>
-            </CardContent>
-        </Card>
-    </Box>
-);
+
+const Profile = () => {
+    const { user } = useAuthStore();
+
+    // Filter out the password field
+    const userDetails = user ? Object.entries(user).filter(([key]) => key !== 'password') : [];
+
+    return (
+        <Box>
+            <Typography variant="h5" gutterBottom>
+                Profile Management
+            </Typography>
+            <Card>
+                <CardContent>
+                    {userDetails.map(([key, value]) => (
+                        <Typography key={key} variant="body1">
+                            {`${key.charAt(0).toUpperCase() + key.slice(1)}: ${value}`}
+                        </Typography>
+                    ))}
+                    <Button variant="contained" sx={{ mt: 2 }}>Edit Profile</Button>
+                </CardContent>
+            </Card>
+        </Box>
+    );
+};
+
 
 export default UserDashboard;
