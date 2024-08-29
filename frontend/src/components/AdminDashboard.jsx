@@ -176,8 +176,8 @@ const AdminDashboard = () => {
                 <CardContent>
                     <Typography variant="h6">Company Name: {company.companyName}</Typography>
                     <Typography variant="body1">Email: {company.email}</Typography>
-                    <Typography variant="body1">Address: {company.address}</Typography>
-                    <Typography variant="body1">Phone: {company.phone}</Typography>
+                    <Typography variant="body1">Id: {company.id}</Typography>
+                    
                 </CardContent>
             </Card>
         </div>
