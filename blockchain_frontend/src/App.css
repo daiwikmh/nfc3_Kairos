@@ -1,0 +1,79 @@
+/* InsuranceApp.module.css */
+
+
+.insurance-form{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+/* Container for the wallet section */
+.wallet-section {
+  position: relative; /* Relative positioning for the container */
+  width: 100%; /* Ensure it takes full width of its parent */
+}
+
+/* Connect Wallet button styling */
+.connect-wallet-btn {
+  position: absolute; /* Absolute positioning */
+  top: 20px; /* Adjust top position */
+  right: 20px; /* Adjust right position */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.connect-wallet-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Public key styling to match the button */
+.public-key {
+  position: absolute; /* Absolute positioning */
+  top: 20px; /* Same top position as the button */
+  right: 20px; /* Same right position as the button */
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* Error message styling */
+.error {
+  color: red;
+  margin-top: 10px;
+}
+
+/* Form container styling */
+.formContainer {
+  margin-top: 20px;
+}
+
+.insurance-form input,
+.insurance-form button {
+  display: block;
+  margin-bottom: 10px;
+  padding: 10px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.insurance-form button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.insurance-form button:hover {
+  background-color: #218838;
+}
+
+.pdfLink {
+  margin-top: 20px;
+}
